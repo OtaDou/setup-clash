@@ -45,5 +45,4 @@ runs:
         nohup ./clash -f ${{ github.action_path }}/clash_filtered.yml &
         sleep 5
         curl -X PUT "127.0.0.1:9090/proxies/GLOBAL" -d '{"name": "1"}'
-        curl --proxy "http://127.0.0.1:11223" ipinfo.io
     
