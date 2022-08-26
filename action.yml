@@ -21,12 +21,12 @@ runs:
         curl -L https://github.com/whoisix/subscribe2clash/releases/download/v1.0.3/subscribe2clash-linux-amd64-v1.0.3.gz -o subscribe2clash.gz
         gzip -d subscribe2clash.gz
         chmod +x subscribe2clash
-        nohup ./subscribe2clash -l 127.0.0.1:8162 -b ${{ github.action_path }}/base_conf.yml &
+        nohup ./subscribe2clash -l 127.0.0.1:8162 &
     - name: download clash
       shell: bash
       working-directory: ${{ github.action_path }}
       run: |
-        curl -L https://github.com/Dreamacro/clash/releases/download/v1.10.0/clash-linux-amd64-v1.10.0.gz -o clash.gz
+        curl -L https://github.com/Dreamacro/clash/releases/download/v1.11.4/clash-linux-amd64-v1.11.4.gz -o clash.gz
         gzip -d clash.gz
         chmod +x clash
     - name: download Deno
@@ -41,9 +41,8 @@ runs:
       working-directory: ${{ github.action_path }}
       run: |
         curl "127.0.0.1:8162?sub_link=${{ inputs.subscription_url }}" > clash.yml
-        ./deno run -A ${{ github.action_path }}/doFilter.js ${{ inputs.proxies_name_regex }}
+        ./deno run --allow-read --allow-write ${{ github.action_path }}/proxyFilter.js ${{ inputs.proxies_name_regex }}
         nohup ./clash -f ${{ github.action_path }}/clash_filtered.yml &
         sleep 5
-        curl -X PUT "127.0.0.1:9090/proxies/GLOBAL" -d '{"name": "1"}'
-        curl --proxy "http://127.0.0.1:11223" ipinfo.io
+        curl -X PUT "127.0.0.1:9090/proxies/GLOBAL" -d '{"name": "0"}'
     

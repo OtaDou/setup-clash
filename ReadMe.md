@@ -1,7 +1,7 @@
 # Setup clash
 Github action for setup clash
 
-default http(s) proxy port is `11223`
+default http(s) proxy port is `7890`
 
 ### Example
 ```yml
@@ -14,7 +14,7 @@ jobs:
       with:
         subscription_url: ${{ secrets.SUBSCRIPTION_URL }}
         proxies_name_regex: JAPAN
-    - run: curl --proxy "http://127.0.0.1:11223" ipinfo.io
+    - run: curl --proxy "http://127.0.0.1:7890" ipinfo.io
 ```
 ### Inputs
 | name               | value  | default | description                              |
