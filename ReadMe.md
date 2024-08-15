@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Setup clash
-      uses: OtaDou/setup-clash@v1
+      uses: OtaDou/setup-clash@v2
       with:
         subscription_url: ${{ secrets.SUBSCRIPTION_URL }}
         proxies_name_regex: JAPAN

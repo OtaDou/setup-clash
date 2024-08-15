@@ -18,31 +18,30 @@ runs:
       shell: bash
       working-directory: ${{ github.action_path }}
       run: |
-        curl -L https://github.com/whoisix/subscribe2clash/releases/download/v1.0.3/subscribe2clash-linux-amd64-v1.0.3.gz -o subscribe2clash.gz
-        gzip -d subscribe2clash.gz
-        chmod +x subscribe2clash
-        nohup ./subscribe2clash -l 127.0.0.1:8162 &
+        curl -L https://github.com/tindy2013/subconverter/releases/download/v0.9.0/subconverter_linux64.tar.gz -o subconverter.tgz
+        tar -xzf subconverter.tgz
+        nohup ./subconverter/subconverter &
     - name: download clash
       shell: bash
       working-directory: ${{ github.action_path }}
       run: |
-        curl -L https://github.com/Dreamacro/clash/releases/download/v1.11.4/clash-linux-amd64-v1.11.4.gz -o clash.gz
+        curl -L https://github.com/MetaCubeX/mihomo/releases/download/v1.18.7/mihomo-linux-amd64-v1.18.7.gz -o clash.gz
         gzip -d clash.gz
         chmod +x clash
     - name: download Deno
       shell: bash
       working-directory: ${{ github.action_path }}
       run: |
-        curl -L https://github.com/denoland/deno/releases/download/v1.21.1/deno-x86_64-unknown-linux-gnu.zip -o deno.zip
+        curl -L https://github.com/denoland/deno/releases/download/v1.45.5/deno-x86_64-unknown-linux-gnu.zip -o deno.zip
         unzip deno.zip
         chmod +x deno
     - name: run clash and choose first proxy
       shell: bash
       working-directory: ${{ github.action_path }}
       run: |
-        curl "127.0.0.1:8162?sub_link=${{ inputs.subscription_url }}" > clash.yml
+        curl --get "127.0.0.1:25500/sub" --data-urlencode "target=clash" --data-urlencode "url=${{ inputs.subscription_url }}" > clash.yml
         ./deno run --allow-read --allow-write ${{ github.action_path }}/proxyFilter.js ${{ inputs.proxies_name_regex }}
         nohup ./clash -f ${{ github.action_path }}/clash_filtered.yml &
         sleep 5
-        curl -X PUT "127.0.0.1:9090/proxies/GLOBAL" -d '{"name": "0"}'
+        curl -X PATCH "127.0.0.1:9090/configs" -d '{"mode": "global"}'
     
